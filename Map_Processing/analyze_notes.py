@@ -67,31 +67,6 @@ def get_note_placements_by_index(dat_json, most_common_placements):
 
 
 # %%
-# Dictonaries for converting our values to words
-note_types = { # Direction is the direction from which one must cut the note 
-    0   : "No Note",
-    1   : "Red Up",
-    2   : "Red Down",
-    3   : "Red Right",
-    4   : "Red Left",
-    5   : "Red Down-Right",
-    6   : "Red Down-Left",
-    7   : "Red Up-Right",
-    8   : "Red Up-Left",
-    9   : "Red No Dir",
-    10  : "Blue Up",
-    11  : "Blue Down",
-    12  : "Blue Right",
-    13  : "Blue Left",
-    14  : "Blue Down-Right",
-    15  : "Blue Down-Left",
-    16  : "Blue Up-Right",
-    17  : "Blue Up-Left",
-    18  : "Blue No Dir",
-}
-
-
-# %%
 # Compute the features of the notes at a given time point (for the CRF model)
 def get_placement_features(dat_json, most_common_placements):
     # List of all notes, not grouped with notes at same times
@@ -173,5 +148,68 @@ def get_placement_features(dat_json, most_common_placements):
             features_dict['next_placement'] = next_features['placement_index']
         
         prev_time, prev_features = time_point, features_dict
-    
+
     return features_at_time_points
+
+
+# %%
+# Get a list of strings where each string is just numbers describing the notes at that time point
+def get_notes_as_strings(dat_json):
+    # List of all notes, not grouped with notes at same times
+    notes_list = dat_json['_notes']
+    # List of all unique time points that notes are at
+    note_timings = set([note['_time'] for note in notes_list])
+    # Dictonary mapping time point to dictonary note information
+    # Using 9 for no note instead of 0 since 0 stands for red, row 0 etc.
+    notes_at_time_point = {note_timing : {'red_count' : 0,
+                                          'blue_count' : 0,
+                                          'red_colours' : [9, 9],
+                                          'red_directions' : [9, 9],
+                                          'red_rows' : [9, 9],
+                                          'red_cols' : [9, 9],
+                                          'blue_colours' : [9, 9],
+                                          'blue_directions' : [9, 9],  
+                                          'blue_rows' : [9, 9],
+                                          'blue_cols' : [9, 9] }
+                            for note_timing in note_timings}
+    # Dictonary for colour number to colour name
+    colours = {0 : 'red', 1 : 'blue'}
+    for note in notes_list:
+        note_time = note['_time']
+        # 0 - Red, 1 - Blue
+        colour_num = note['_type'] 
+        if colour_num not in [0, 1]: # Must be bomb
+            continue
+        colour = colours[colour_num]
+        # We are only allowing up to 2 blocks of any colour to limit the string size
+        colour_count = notes_at_time_point[note_time][f'{colour}_count']
+        if colour_count >= 2:
+            continue
+
+        direction = note['_cutDirection']
+        row = note['_lineLayer']
+        col = note['_lineIndex']
+        # Prevent mapping and noodle extensions maps from indexing out of bounds (indexes can be negative in these extenstions)
+        if row not in [0, 1, 2] or col not in [0, 1, 2, 3] or direction not in list(range(9)):
+            continue # These arent actually notes but something else in mapping extensions
+        try:
+            notes_at_time_point[note_time][f'{colour}_colours'][colour_count] = colour_num
+            notes_at_time_point[note_time][f'{colour}_directions'][colour_count] = direction
+            notes_at_time_point[note_time][f'{colour}_rows'][colour_count] = row
+            notes_at_time_point[note_time][f'{colour}_cols'][colour_count] = col
+            notes_at_time_point[note_time][f'{colour}_count'] += 1
+        except Exception as e:
+            print(e, "row {}, col {}, note {}".format(row, col, note))
+    # Now convert these notes at time points to strings
+    notes_as_strings_list = []
+    for timing, notes in sorted(notes_at_time_point.items()):
+        # 16 fields. 4 per note and 2x2 notes (2 per colour max)
+        notes_as_string = '{},{},{},{},{},{},{},{},{},{},{},{},{},{},{},{}'.format(
+            notes['red_colours'][0], notes['red_directions'][0], notes['red_rows'][0], notes['red_cols'][0],
+            notes['red_colours'][1], notes['red_directions'][1], notes['red_rows'][1], notes['red_cols'][1],
+            notes['blue_colours'][0], notes['blue_directions'][0], notes['blue_rows'][0], notes['blue_cols'][0],
+            notes['blue_colours'][1], notes['blue_directions'][1], notes['blue_rows'][1], notes['blue_cols'][1]
+        )
+        notes_as_strings_list.append(notes_as_string)
+
+    return notes_as_strings_list
