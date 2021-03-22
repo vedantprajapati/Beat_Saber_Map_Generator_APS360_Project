@@ -1,2 +1,4 @@
 *.zip
 .vscode/
+Baseline_Model/markov_model_64_state.json
+Baseline_Model/markov_model_7_state.json

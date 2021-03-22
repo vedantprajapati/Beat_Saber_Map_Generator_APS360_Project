@@ -1,0 +1,45 @@
+{
+  "_version": "2.0.0",
+  "_songName": "Sorairo Days (TV Size)",
+  "_songSubName": "",
+  "_songAuthorName": "Shoko Nakagawa",
+  "_levelAuthorName": "Shit Saber Model TM",
+  "_beatsPerMinute": 174,
+  "_shuffle": 0,
+  "_shufflePeriod": 0.5,
+  "_previewStartTime": 50.09499740600586,
+  "_previewDuration": 10,
+  "_songFilename": "song.egg",
+  "_coverImageFilename": "cover.jpg",
+  "_environmentName": "NiceEnvironment",
+  "_songTimeOffset": 0,
+  "_difficultyBeatmapSets": [
+    {
+      "_beatmapCharacteristicName": "Standard",
+      "_difficultyBeatmaps": [
+        {
+          "_difficulty": "Expert",
+          "_difficultyRank": 7,
+          "_beatmapFilename": "Expert.dat",
+          "_noteJumpMovementSpeed": 13,
+          "_noteJumpStartBeatOffset": 0,
+          "_customData": {
+            "_editorOffset": 252,
+            "_editorOldOffset": 252
+          }
+        },
+        {
+          "_difficulty": "ExpertPlus",
+          "_difficultyRank": 9,
+          "_beatmapFilename": "ExpertPlus.dat",
+          "_noteJumpMovementSpeed": 15,
+          "_noteJumpStartBeatOffset": 0,
+          "_customData": {
+            "_editorOffset": 252,
+            "_editorOldOffset": 252
+          }
+        }
+      ]
+    }
+  ]
+}

@@ -202,7 +202,7 @@ def get_notes_as_strings(dat_json):
             print(e, "row {}, col {}, note {}".format(row, col, note))
     # Now convert these notes at time points to strings
     notes_as_strings_list = []
-    for timing, notes in sorted(notes_at_time_point.items()):
+    for _, notes in sorted(notes_at_time_point.items()):
         # 16 fields. 4 per note and 2x2 notes (2 per colour max)
         notes_as_string = '{},{},{},{},{},{},{},{},{},{},{},{},{},{},{},{}'.format(
             notes['red_colours'][0], notes['red_directions'][0], notes['red_rows'][0], notes['red_cols'][0],
