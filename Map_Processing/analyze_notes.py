@@ -13,7 +13,7 @@ from zipfile import ZipFile
 
 # %%
 # Compute the note placements in one beat map and return a list of their index in the most common
-def get_note_placements_by_index(dat_json, most_common_placements):
+def get_note_placements_by_index(dat_json, most_common_placements, min_time_slice=0.0625):
     # List of all notes, not grouped with notes at same times
     notes_list = dat_json['_notes']
     # List of all unique time points that notes are at
