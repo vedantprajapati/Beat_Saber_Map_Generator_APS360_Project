@@ -5,3 +5,4 @@ Baseline_Model/markov_model_7_state.json
 Data_Gather_Filter_Download/downloaded_maps_df_small.pkl
 Evaluate_Models/Comparisons/
 Note_Orientation/song.egg
+*.npy
