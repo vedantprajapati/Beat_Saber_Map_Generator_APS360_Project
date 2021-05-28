@@ -5,6 +5,7 @@ Beat Saber map generator created using PyTorch. Using a deep learning LSTM, this
 ## Example Gameplay:
 
 Original (Left) vs Generated (Right)
+
 https://user-images.githubusercontent.com/40185967/120013662-017bba80-bfaf-11eb-864a-63923361d44d.mp4
 
 
